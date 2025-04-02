@@ -1,20 +1,20 @@
-import { useState } from 'react';
-import './Auth.css';
+import { useState } from "react";
+import "./Auth.css";
 
 export function RegisterForm() {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    password: ''
+    firstName: "",
+    lastName: "",
+    password: "",
   });
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -24,25 +24,34 @@ export function RegisterForm() {
     setMessage(null);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
-      
+
       if (response.ok) {
-        setMessage({ type: 'success', text: 'Registration successful! You can now login.' });
-        setFormData({ firstName: '', lastName: '', password: '' });
+        setMessage({
+          type: "success",
+          text: "Registration successful! You can now login.",
+        });
+        setFormData({ firstName: "", lastName: "", password: "" });
       } else {
-        setMessage({ type: 'error', text: data.message || 'Registration failed. Please try again.' });
+        setMessage({
+          type: "error",
+          text: data.message || "Registration failed. Please try again.",
+        });
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Server error. Please try again later.' });
-      console.error('Registration error:', error);
+      setMessage({
+        type: "error",
+        text: "Server error. Please try again later.",
+      });
+      console.error("Registration error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +72,7 @@ export function RegisterForm() {
             required
           />
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="lastName">Last Name</label>
           <input
@@ -75,7 +84,7 @@ export function RegisterForm() {
             required
           />
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
@@ -87,15 +96,13 @@ export function RegisterForm() {
             required
           />
         </div>
-        
+
         <button type="submit" className="auth-button" disabled={isLoading}>
-          {isLoading ? 'Registering...' : 'Register'}
+          {isLoading ? "Registering..." : "Register"}
         </button>
-        
+
         {message && (
-          <div className={`message ${message.type}`}>
-            {message.text}
-          </div>
+          <div className={`message ${message.type}`}>{message.text}</div>
         )}
       </form>
     </div>
@@ -104,18 +111,18 @@ export function RegisterForm() {
 
 export function LoginForm() {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    password: ''
+    firstName: "",
+    lastName: "",
+    password: "",
   });
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -125,27 +132,33 @@ export function LoginForm() {
     setMessage(null);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
-      
+
       if (response.ok) {
-        setMessage({ type: 'success', text: 'Login successful!' });
-        localStorage.setItem('authToken', data.token); // Store the token if returned
-        
+        setMessage({ type: "success", text: "Login successful!" });
+        localStorage.setItem("authToken", data.token); // Store the token if returned
+
         // You can add a redirect here or handle login success in a parent component
       } else {
-        setMessage({ type: 'error', text: data.message || 'Login failed. Please check your credentials.' });
+        setMessage({
+          type: "error",
+          text: data.message || "Login failed. Please check your credentials.",
+        });
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Server error. Please try again later.' });
-      console.error('Login error:', error);
+      setMessage({
+        type: "error",
+        text: "Server error. Please try again later.",
+      });
+      console.error("Login error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -166,7 +179,7 @@ export function LoginForm() {
             required
           />
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="lastName">Last Name</label>
           <input
@@ -178,7 +191,7 @@ export function LoginForm() {
             required
           />
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
@@ -190,15 +203,13 @@ export function LoginForm() {
             required
           />
         </div>
-        
+
         <button type="submit" className="auth-button" disabled={isLoading}>
-          {isLoading ? 'Logging in...' : 'Login'}
+          {isLoading ? "Logging in..." : "Login"}
         </button>
-        
+
         {message && (
-          <div className={`message ${message.type}`}>
-            {message.text}
-          </div>
+          <div className={`message ${message.type}`}>{message.text}</div>
         )}
       </form>
     </div>

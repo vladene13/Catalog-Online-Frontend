@@ -1,74 +1,81 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vite.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.jsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
-
-// export default App
-import { useState, useEffect } from 'react';
-import AuthPage from './AuthPage';
-import './App.css';
+import { useState, useEffect } from "react";
+import AuthPage from "./AuthPage";
+import ClassList from "./components/ClassList";
+import "./App.css";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
+  const [currentPage, setCurrentPage] = useState("home"); // 'home', 'classes', etc.
+
   useEffect(() => {
     // Check if user is authenticated (you might want to validate the token with your backend)
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
     if (token) {
       setIsAuthenticated(true);
     }
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem("authToken");
     setIsAuthenticated(false);
+    setCurrentPage("home");
+  };
+
+  const renderContent = () => {
+    if (!isAuthenticated) {
+      return <AuthPage onLoginSuccess={() => setIsAuthenticated(true)} />;
+    }
+
+    switch (currentPage) {
+      case "classes":
+        return <ClassList />;
+      default:
+        return (
+          <div className="welcome-content">
+            <h2>Welcome to Catalog Online</h2>
+            <p>Please select an option from the navigation menu.</p>
+          </div>
+        );
+    }
   };
 
   return (
     <div className="app-container">
-      {isAuthenticated ? (
-        <div className="welcome-page">
-          <header>
-            <h1>Welcome to Catalog Online</h1>
-            <button onClick={handleLogout} className="logout-button">Logout</button>
-          </header>
-          <main>
-            <p>You are now logged in. Your catalog content will appear here.</p>
-            {/* Your app's main content will go here */}
-          </main>
-        </div>
-      ) : (
-        <AuthPage onLoginSuccess={() => setIsAuthenticated(true)} />
+      {isAuthenticated && (
+        <header className="app-header">
+          <h1>Catalog Online</h1>
+          <nav>
+            <ul className="nav-links">
+              <li>
+                <button
+                  onClick={() => setCurrentPage("home")}
+                  className={currentPage === "home" ? "active" : ""}
+                >
+                  Home
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => setCurrentPage("classes")}
+                  className={currentPage === "classes" ? "active" : ""}
+                >
+                  Classes
+                </button>
+              </li>
+              {/* Add more navigation items here as needed */}
+            </ul>
+          </nav>
+          <button onClick={handleLogout} className="logout-button">
+            Logout
+          </button>
+        </header>
       )}
+
+      <main className="app-main">{renderContent()}</main>
+
+      <footer className="app-footer">
+        <p>© {new Date().getFullYear()} Catalog Online</p>
+      </footer>
     </div>
   );
 }
