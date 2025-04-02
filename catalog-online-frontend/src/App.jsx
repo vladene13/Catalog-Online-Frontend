@@ -5,6 +5,7 @@ import ClassList from "./components/ClassList";
 import StudentList from "./components/StudentList";
 import ScienceList from "./components/ScienceList";
 import StudentGrades from "./components/StudentGrades";
+import GradeForm from "./components/GradeForm";
 import "./App.css";
 
 // NavLink component to handle active state
@@ -79,6 +80,8 @@ function App() {
               <Route path="/classes/:classId/students" element={<StudentList />} />
               <Route path="/classes/:classId/sciences" element={<ScienceList />} />
               <Route path="/students/:studentId/sciences/:scienceId/grades" element={<StudentGrades />} />
+              <Route path="/students/:studentId/sciences/:scienceId/grades/add" element={<GradeForm />} />
+              <Route path="/students/:studentId/sciences/:scienceId/grades/edit/:gradeId" element={<GradeForm />} />
             </Routes>
           )}
         </main>

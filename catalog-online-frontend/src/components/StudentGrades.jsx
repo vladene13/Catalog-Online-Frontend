@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import "./StudentGrades.css";
 
 function StudentGrades() {
@@ -57,6 +57,18 @@ function StudentGrades() {
     navigate(-1);
   };
 
+  const handleAddGrade = () => {
+    navigate(`/students/${studentId}/sciences/${scienceId}/grades/add`, {
+      state: { studentName, scienceName }
+    });
+  };
+
+  const handleEditGrade = (grade) => {
+    navigate(`/students/${studentId}/sciences/${scienceId}/grades/edit/${grade.id}`, {
+      state: { grade, studentName, scienceName }
+    });
+  };
+
   // Format the date to a more readable format
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
@@ -71,6 +83,12 @@ function StudentGrades() {
           &larr; Back
         </button>
         <h2>{studentName}'s Grades for {scienceName}</h2>
+      </div>
+
+      <div className="grades-actions">
+        <button onClick={handleAddGrade} className="add-grade-button">
+          Add New Grade
+        </button>
       </div>
 
       {loading && (
@@ -100,6 +118,7 @@ function StudentGrades() {
                 <th>Date</th>
                 <th>Subject</th>
                 <th>Grade</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -108,6 +127,14 @@ function StudentGrades() {
                   <td>{formatDate(grade.date)}</td>
                   <td>{grade.scienceName || scienceName}</td>
                   <td className="grade-value">{grade.gradeValue}</td>
+                  <td>
+                    <button 
+                      className="edit-button"
+                      onClick={() => handleEditGrade(grade)}
+                    >
+                      Edit
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
