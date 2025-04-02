@@ -1,23 +1,17 @@
 import { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
 import AuthPage from "./AuthPage";
 import ClassList from "./components/ClassList";
 import StudentList from "./components/StudentList";
 import ScienceList from "./components/ScienceList";
+import StudentGrades from "./components/StudentGrades";
 import "./App.css";
 
 // NavLink component to handle active state
 function NavLink({ to, children }) {
   const location = useLocation();
-  const isActive =
-    location.pathname === to || location.pathname.startsWith(`${to}/`);
-
+  const isActive = location.pathname === to || location.pathname.startsWith(`${to}/`);
+  
   return (
     <li>
       <Link to={to} className={isActive ? "active" : ""}>
@@ -82,14 +76,9 @@ function App() {
                 }
               />
               <Route path="/classes" element={<ClassList />} />
-              <Route
-                path="/classes/:classId/students"
-                element={<StudentList />}
-              />
-              <Route
-                path="/classes/:classId/sciences"
-                element={<ScienceList />}
-              />
+              <Route path="/classes/:classId/students" element={<StudentList />} />
+              <Route path="/classes/:classId/sciences" element={<ScienceList />} />
+              <Route path="/students/:studentId/sciences/:scienceId/grades" element={<StudentGrades />} />
             </Routes>
           )}
         </main>
