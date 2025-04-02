@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./ClassList.css";
 
 function ClassList() {
@@ -44,7 +45,9 @@ function ClassList() {
       <h3>{classItem.name}</h3>
       <p>Year: {classItem.year}</p>
       <div className="class-actions">
-        <button className="view-button">View Details</button>
+        <Link to={`/classes/${classItem.id}/students`} className="view-button">
+          View Students
+        </Link>
       </div>
     </div>
   );
