@@ -48,6 +48,12 @@ function ClassList() {
         <Link to={`/classes/${classItem.id}/students`} className="view-button">
           View Students
         </Link>
+        <Link
+          to={`/classes/${classItem.id}/sciences`}
+          className="view-sciences-button"
+        >
+          View Sciences
+        </Link>
       </div>
     </div>
   );

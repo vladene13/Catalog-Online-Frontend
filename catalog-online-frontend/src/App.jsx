@@ -1,10 +1,51 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+} from "react-router-dom";
 import AuthPage from "./AuthPage";
 import ClassList from "./components/ClassList";
 import StudentList from "./components/StudentList";
+import ScienceList from "./components/ScienceList";
 import "./App.css";
 
+// NavLink component to handle active state
+function NavLink({ to, children }) {
+  const location = useLocation();
+  const isActive =
+    location.pathname === to || location.pathname.startsWith(`${to}/`);
+
+  return (
+    <li>
+      <Link to={to} className={isActive ? "active" : ""}>
+        {children}
+      </Link>
+    </li>
+  );
+}
+
+// Navigation component
+function Navigation({ onLogout }) {
+  return (
+    <header className="app-header">
+      <h1>Catalog Online</h1>
+      <nav>
+        <ul className="nav-links">
+          <NavLink to="/">Home</NavLink>
+          <NavLink to="/classes">Classes</NavLink>
+        </ul>
+      </nav>
+      <button onClick={onLogout} className="logout-button">
+        Logout
+      </button>
+    </header>
+  );
+}
+
+// Main App component
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -21,45 +62,10 @@ function App() {
     setIsAuthenticated(false);
   };
 
-  const renderNavbar = () => {
-    if (!isAuthenticated) return null;
-
-    return (
-      <header className="app-header">
-        <h1>Catalog Online</h1>
-        <nav>
-          <ul className="nav-links">
-            <li>
-              <Link
-                to="/"
-                className={location.pathname === "/" ? "active" : ""}
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/classes"
-                className={
-                  location.pathname.includes("/classes") ? "active" : ""
-                }
-              >
-                Classes
-              </Link>
-            </li>
-          </ul>
-        </nav>
-        <button onClick={handleLogout} className="logout-button">
-          Logout
-        </button>
-      </header>
-    );
-  };
-
   return (
     <Router>
       <div className="app-container">
-        {renderNavbar()}
+        {isAuthenticated && <Navigation onLogout={handleLogout} />}
 
         <main className="app-main">
           {!isAuthenticated ? (
@@ -79,6 +85,10 @@ function App() {
               <Route
                 path="/classes/:classId/students"
                 element={<StudentList />}
+              />
+              <Route
+                path="/classes/:classId/sciences"
+                element={<ScienceList />}
               />
             </Routes>
           )}

@@ -38,21 +38,20 @@ body {
   gap: 1rem;
 }
 
-.nav-links button {
-  background: none;
-  border: none;
+.nav-links a {
   color: #333;
   font-size: 1rem;
-  cursor: pointer;
   padding: 0.5rem 1rem;
   border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
 }
 
-.nav-links button:hover {
+.nav-links a:hover {
   background-color: #f0f0f0;
 }
 
-.nav-links button.active {
+.nav-links a.active {
   background-color: #646cff;
   color: white;
 }
